@@ -34,3 +34,7 @@ def buildLaggedFeatures(s,lag=2,dropna=True):
 
 s2=s=pd.DataFrame({'a':[5,4,3,2,1], 'b':[50,40,30,20,10]},index=[1,2,3,4,5])
 res2=buildLaggedFeatures(s2,lag=2,dropna=False)
+
+
+Git is a distributed version control system.
+Git is free software.
