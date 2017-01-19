@@ -71,10 +71,10 @@ def main():
 ## #返回的是一个包含tuple的list，list的元素是记录行，tuple的元素是每行记录的字段
 ## ms.ExecNonQuery("insert into WeiBoUser values('2','3')")
 
-    ms = MSSQL(host="localhost",user="sa",pwd="123456",db="PythonWeiboStatistics")
-    resList = ms.ExecQuery("SELECT id,weibocontent FROM WeiBo")
-    for (id,weibocontent) in resList:
-        print str(weibocontent).decode("utf8")
+    ms = MSSQL(host="10.210.19.26",user="sa",pwd="123456",db="BOOKING")
+    resList = ms.ExecQuery("SELECT TOP 10 * from RAWDATA")
+    for rec in resList:
+        print(rec)
 
 if __name__ == '__main__':
     main()

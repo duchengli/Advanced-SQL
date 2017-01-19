@@ -10,7 +10,7 @@ ori=''
 des=''
 ac1=''
 
-csvfile=open('d:\\fdl.csv','w',newline='')
+csvfile=open('d:\\FDL.CSV','w',newline='')
 writer=csv.writer(csvfile)
 writer.writerow([u'Flt_Date',u'Flt_No',u'Dep',u'Arr',u'Aircraft',u'Alloc','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',u'Seat',u'Pax',u'Carrier'])
 
