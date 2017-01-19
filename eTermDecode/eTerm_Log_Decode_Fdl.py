@@ -12,7 +12,7 @@ ac1=''
 
 csvfile=open('d:\\fdl.csv','w',newline='')
 writer=csv.writer(csvfile)
-writer.writerow([u'Flt_Date',u'Flt_No',u'Dep',u'Arr',u'Aircraft',u'Seat','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'])
+writer.writerow([u'Flt_Date',u'Flt_No',u'Dep',u'Arr',u'Aircraft',u'Alloc','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',u'Seat',u'Pax',u'Carrier'])
 
 def cls_decode(cls_text):#按A-Z顺序输出
     cls_inf=[]
@@ -25,6 +25,14 @@ def cls_decode(cls_text):#按A-Z顺序输出
         cls_inf.append(tmp_pax)
     return cls_inf     
 
+def seat_decode(seat):
+	total_seat=0
+	for cabin in seat.strip().split('/'):
+		if len(cabin)!=0:
+			total_seat=total_seat+int(cabin[1:])
+	return total_seat	
+	
+	
 fhand=open('c:\eTerm3\MYLOG.LOG')
 for line in fhand:
     if not line.startswith('                                                                                '):
@@ -114,21 +122,20 @@ for k in range(len(rawdatas)):
                     continue
 
 for result in results:
-    tmp_list=[]
-    tmp_list=[result[0],result[1],result[2],result[3],results[result][0],results[result][1]]
-    for sub_class in cls_decode(results[result][2]):
-        tmp_list.append(sub_class)
-    #print(tmp_list)    
-    writer.writerow(tmp_list)
+	tmp_list=[]
+	total_pax=0
+	tmp_list=[result[0],result[1],result[2],result[3],results[result][0],results[result][1]]
+	for sub_class in cls_decode(results[result][2]):
+		tmp_list.append(sub_class)
+		total_pax=total_pax+int(sub_class)
+	#print(tmp_list)
+	tmp_list.append(seat_decode(results[result][1]))
+	tmp_list.append(total_pax)
+	tmp_list.append(result[1][:2])
+	
+	writer.writerow(tmp_list)
 csvfile.close()
-                    
-                    
-                    
-                     
-                        
-                        
-                    
-        
+
     
     
 
