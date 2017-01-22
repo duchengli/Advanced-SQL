@@ -1,40 +1,42 @@
 #-*- coding:utf-8 -*-
+import json
+from collections import Counter
 
-import tushare as ts
-import pandas as pd
+path='d:/pydata-book-master/ch02/usagov_bitly_data2012-03-16-1331923249.txt'
 
-def buildLaggedFeatures(s,lag=2,dropna=True):
+records=[json.loads(line) for line in open(path)]
+time_zones=[rec['tz'] for rec in records if 'tz' in rec]
 
-	if type(s) is pd.DataFrame:
-		new_dict={}
-		for col_name in s:
-			new_dict[col_name]=s[col_name]
-			# create lagged Series
-			for l in range(1,lag+1):
-				new_dict['%s_lag%d' %(col_name,l)]=s[col_name].shift(l)
-		res=pd.DataFrame(new_dict,index=s.index)
+def get_counts(sequence):
+	counts={}
+	for x in sequence:
+		if x in counts:
+			counts[x]=counts[x]+1
+		else:
+			counts[x]=1
+	return counts
+	
+counts=get_counts(time_zones)
+#print(counts['America/New_York'])
+#print(len(time_zones))
 
-	elif type(s) is pd.Series:
-		the_range=range(lag+1)
-		res=pd.concat([s.shift(i) for i in the_range],axis=1)
-		res.columns=['lag_%d' %i for i in the_range]
-	else:
-		print('Only works for DataFrame or Series')
-		return None
-	if dropna:
-		return res.dropna()
-	else:
-		return res
+def top_counts(count_dict,n=10):
+	value_key_pairs=[(count,tz) for tz,count in count_dict.items()]
+	value_key_pairs.sort()
+	return value_key_pairs[-n:]
+#print(top_counts(counts))
 
+counts=Counter(time_zones)
+#print(counts.most_common(10))
 
-#df = ts.get_k_data('601111',start='2014-01-01', end='2014-12-31')
-#df1=df.set_index('date')
-#date = df.ix['600848']['timeToMarket']
-#print(df1)
+from pandas import DataFrame,Series
+import pandas as pd;import numpy as np
+frame=DataFrame(records)
+#print(frame['tz'].value_counts())
+clean_tz=frame['tz'].fillna('Missing')
+clean_tz[clean_tz=='']='Unknown'
+tz_counts=clean_tz.value_counts()
+#print(tz_counts)
+print(clean_tz)
+	
 
-s2=s=pd.DataFrame({'a':[5,4,3,2,1], 'b':[50,40,30,20,10]},index=[1,2,3,4,5])
-res2=buildLaggedFeatures(s2,lag=2,dropna=False)
-
-
-Git is a distributed version control system.
-Git is free software.

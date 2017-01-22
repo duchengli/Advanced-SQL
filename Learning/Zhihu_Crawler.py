@@ -6,51 +6,36 @@ import urllib.request
 import re
 import json
 
-ck={'Cookie':'all-lj=0a26bbdedef5bd9e71c728e50ba283a3; lianjia_uuid=fe53c238-0ebd-4e4a-b442-858988aae3b4; lianjia_ssid=c0c5b78c-f3a6-48ac-8c0f-798836a7cb06; _ga=GA1.2.1328057788.1471959847; CNZZDATA1253492306=1662681935-1471957055-http%253A%252F%252Fbzclk.baidu.com%252F%7C1471957055; _smt_uid=57bc5326.33a30384; CNZZDATA1254525948=797369229-1471955657-http%253A%252F%252Fbzclk.baidu.com%252F%7C1471955657; CNZZDATA1255633284=1688411013-1471956256-http%253A%252F%252Fbzclk.baidu.com%252F%7C1471956256; CNZZDATA1255604082=1834544274-1471958980-http%253A%252F%252Fbzclk.baidu.com%252F%7C1471958980; CNZZDATA1256793290=1743366477-1471956471-null%7C1471956471; miyue_hide=%20index%20%20index%20%20index%20%20index%20; select_city=110000; lianjia_token=2.0068d6f9ba11cbe982797bd08b00855b61'}
+ck={'Cookie':'q_c1=682e0963d2364cf9923d89f16556d835|1483087248000|1474607524000; d_c0="AHCAbPVwlQqPTpljSnFi-LwJwv1Mjk3jIK4=|1474607524"; _za=cfe4b82c-5980-4982-8ffb-69283db42e9d; __utma=155987696.199938811.1485053109.1485053109.1485055035.2; __utmz=155987696.1485053109.1.1.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; _zap=a15f5070-c330-47bd-9966-8e8d786e9b4f; l_cap_id="N2VhMzRmYjE1OGYxNGIyZGE0ZDVmYzU3MzdmYjQzNWY=|1483436311|bd9562715e3c22d3a7219bfe09393238ebdb57f5"; cap_id="MDBjMjZhNjk3ZGZjNDdlMmJhZmIyNDc0MjI5MDY2ODE=|1483436311|c82fb9f148c7e7dcc37e6e15e28a540faf26a20a"; r_cap_id="MTRlZGRhMDU2NTRjNGUzOWI5YzA5NmNlZGE3ZDRhZjQ=|1483436316|77c135ecc1ea4aa80a81eac36279d56fe630b355"; login="ZjVjYWQwYmQwODAxNGVmYmI0MjVmY2QxZjlkZWYzYjY=|1483436320|a87020e4a5bd8cc2a7722cc6b4a9c0501886af49"; z_c0=Mi4wQUFEQVRrUTdBQUFBY0lCczlYQ1ZDaGNBQUFCaEFsVk5JUDZTV0FEVjYyajl4a0VYMEdXYkF5Y3R5UV9VWktVZUhR|1485053180|3749455743a53566c42832d238a56bfa96e011e6; _xsrf=3c5a15d777a92df3b2be5c7fe49113ad; aliyungf_tc=AQAAALHw0Tbe4A4AshxHfXSaQd7LlMV8; __utmc=155987696; __utmv=155987696.100-1|2=registration_date=20141022=1^3=entry_date=20141022=1; __utmb=155987696.0.10.1485055035'}
 
-hds=[{'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'},{'User-Agent':'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.12 Safari/535.11'},{'User-Agent':'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)'},{'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0'},{'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/44.0.2403.89 Chrome/44.0.2403.89 Safari/537.36'},{'User-Agent':'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'},{'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'},{'User-Agent':'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0'},{'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0.1) Gecko/20100101 Firefox/4.0.1'},{'User-Agent':'Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1'},{'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'},{'User-Agent':'Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; en) Presto/2.8.131 Version/11.11'},{'User-Agent':'Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.11'},{'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.154 Safari/537.36 LBBROWSER'}]
+hds={'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6','Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
 
 def getTopics():
-	zhihuTopics = []
-	url = 'https://www.zhihu.com/topics'
-	ck.update(hds[random.randint(0,len(hds)-1)])
+	zhihuTopics=[]
+	url='https://www.zhihu.com/topics'
+	ck.update(hds)
 	req=urllib.request.Request(url,headers=ck)	
 	source_code=urllib.request.urlopen(req,timeout=100).read().decode('utf-8')
-	pattern = re.compile('<li.*?data-id="(.*?)"><a.*?>(.*?)</a></li>',re.S)
-	results = re.findall(pattern,source_code)
-	print(results)
-	for n1 in results:
-		print(n1[0],n1[1])
-		#topic = Topic(n1[0],n1[1])
-		#zhihuTopics.append(topic)
-	#return zhihuTopics
+	pattern=re.compile('<li.*?data-id="(.*?)"><a.*?>(.*?)</a></li>',re.S)
+	results=re.findall(pattern,source_code)
+	return zhihuTopics
 
-defgetSubTopic(topic):
-    url = 'https://www.zhihu.com/node/TopicsPlazzaListV2'
-    isGet = True;
-    offset = -20;
-    contents = []
-    while isGet:
-        offset = offset + 20
-        values = {'method': 'next', 'params': '{"topic_id":'+topic.id+',"offset":'+str(offset)+',"hash_id":""}'}
-        try:
-            data = urllib.parse.urlencode(values)(values)
-            request = urllib.request.Request(url,data,headers)
-            response = urllib.request.urlopen(request)
-            json_str = json.loads(response.read().decode('utf-8'))
+def getSubTopic():
+	url='https://www.zhihu.com/node/TopicsPlazzaListV2'
+	contents=[]
+	#values={'method':'next','params':'{"topic_id":'+topic.id+',"offset":0,"hash_id":""}'}
+	values={'method':'next','params':'{"topic_id":'+'833'+',"offset":0,"hash_id":""}'}
+	try:
+		data=urllib.parse.urlencode(values)
+		request=urllib.request.Request(url,data,headers=ck)
+		response=urllib.request.urlopen(request)
+		print(response.read().decode('utf-8'))
+		print(data)
+		#json_str = json.loads(response.read().decode('utf-8'))
             # 将获取到的数组转换成字符串
-            topicMsg = '.'.join(json_str['msg'])
-            pattern = re.compile('<strong>(.*?)</strong>.*?<p>(.*?)</p>',re.S)
-            results = re.findall(pattern,topicMsg)
-            if len(results) ==0:
-                isGet =False
-            for n in results:
-                content = Content(n[0],n[1])
-                contents.append(content)
-                print n[0],'->'+n[1]
-        excepturllib2.URLError, e:
-            if hasattr(e,"reason"):
-                print u"错误原因",e
-    file = open(topic.name+'.txt','w')
-    wiriteLog(contents,file)
-    return contents
+			#print(json_str)
+	except:
+		print('Error')
+	
+getSubTopic()
+
