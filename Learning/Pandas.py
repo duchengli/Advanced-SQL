@@ -37,6 +37,24 @@ clean_tz=frame['tz'].fillna('Missing')
 clean_tz[clean_tz=='']='Unknown'
 tz_counts=clean_tz.value_counts()
 #print(tz_counts)
-print(clean_tz)
-	
+#print(clean_tz)
+
+results=Series([x.split()[0] for x in frame.a.dropna()])
+#print(results.value_counts()[:10])
+
+unames=['user_id','gender','age','occupation','zip']
+users=pd.read_table('D:/pydata-book-master/ch02/movielens/users.dat',sep='::',header=None,names=unames,engine='python')
+rnames=['user_id','movie_id','rating','timestamp']
+ratings=pd.read_table('D:/pydata-book-master/ch02/movielens/ratings.dat',sep='::',header=None,names=rnames,engine='python')
+mnames=['movie_id','title','genres']
+movies=pd.read_table('D:/pydata-book-master/ch02/movielens/movies.dat',sep='::',header=None,names=mnames,engine='python')
+#print(users[:5])
+#print(ratings[:5])
+#print(movies[:5])
+
+data=pd.merge(pd.merge(ratings,users),movies)
+#print(data.head(5))
+mean_ratings=pd.pivot_table(data, values='rating', index=['title'],columns=['gender'], aggfunc='mean')
+print(mean_ratings.head(10))
+
 
