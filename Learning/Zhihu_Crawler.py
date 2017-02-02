@@ -57,6 +57,34 @@ def login(secret,account):
 		login_code=eval(login_page.text)
 		print(login_code['msg'])
 	#print(session.cookies)
+
+def getTopics():
+	zhihuTopics=[]
+	soup=session.get('https://www.zhihu.com/topics',headers=headers,allow_redirects=False)
+	pattern=re.compile('<li.*?data-id="(.*?)"><a.*?>(.*?)</a></li>',re.S)
+	results=re.findall(pattern,soup.text)
+	for n1 in results:
+		#print(n1[0],n1[1])
+		topic =(n1[0],n1[1])
+		zhihuTopics.append(topic)
+	return zhihuTopics
+
+def getSubTopic(topic):
+	offset = -20;
+	contents = []
+	while offset<=120:
+		offset = offset + 20
+		values = {'method': 'next', 'params': '{"topic_id":833,"offset":0,"hash_id":"d28e1067630ce1840d3a3fe25bd6a0ad"}'}
+		data=urllib.parse.urlencode(values)
+		try:
+			print(data)
+			#soup=session.post('https://www.zhihu.com/node/TopicsPlazzaListV2',data=urllib.parse.urlencode(values),headers=headers)
+			#print(soup.text)
+			#json_str = json.loads(soup.text)
+			# 将获取到的数组转换成字符串
+		except:
+			print('没有拉取到数据')
+	return contents
 	
 if __name__ == '__main__':
 	if isLogin():
@@ -65,6 +93,7 @@ if __name__ == '__main__':
 		account=input('请输入你的用户名\n>')
 		secret=input('请输入你的密码\n>')
 		login(secret,account)
-		login_code=session.get('https://www.zhihu.com/settings/profile',headers=headers,allow_redirects=False)
-		print(login_code.text)
+		#login_code=session.get('https://www.zhihu.com/settings/profile',headers=headers,allow_redirects=False)
+		#print(login_code.text)
+		getSubTopic(833)
 		
