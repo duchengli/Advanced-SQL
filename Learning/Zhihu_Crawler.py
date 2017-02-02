@@ -1,80 +1,70 @@
-import urllib.parse as up  
-import re 
-import urllib 
-from http.cookiejar import CookieJar  
+# -*- coding: utf-8 -*-
 
-'''
-def getTopics():
-	zhihuTopics=[]
-	url='https://www.zhihu.com/topics'
-	req=urllib.request.Request(url)	
-	source_code=urllib.request.urlopen(req,timeout=100).read().decode('utf-8')
-	pattern=re.compile('<li.*?data-id="(.*?)"><a.*?>(.*?)</a></li>',re.S)
-	results=re.findall(pattern,source_code)
-	return zhihuTopics
+import http.cookiejar
+import urllib
+import requests
+import re
+import time
+import os.path
+from PIL import Image
 
-def getSubTopic():
-	url='https://www.zhihu.com/node/TopicsPlazzaListV2'
-	contents=[]
-	#values={'method':'next','params':'{"topic_id":'+topic.id+',"offset":0,"hash_id":""}'}
-	values={'method':'next','params':'{"topic_id":'+'833'+',"offset":0,"hash_id":""}'}
+agent='Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0'
+headers={'Host':'www.zhihu.com','Referer':'https://www.zhihu.com/','User-Agent':agent}
+session=requests.session()
+session.cookies=http.cookiejar.CookieJar()
+
+def isLogin():
+	url='https://www.zhihu.com/settings/profile'
+	login_code=session.get(url,headers=headers,allow_redirects=False).status_code
+	if login_code == 200:
+		return True
+	else:
+		return False
+
+def login(secret,account):
+	if re.match(r"^1\d{10}$",account):
+		print('使用手机号登录\n')
+		post_url='https://www.zhihu.com/login/phone_num'
+		postdata={
+			#'_xsrf': get_xsrf(),
+			'password': secret,
+			'remember_me': 'true', 
+			'phone_num': account,
+		}
+	else:
+		if "@" in account:
+			print('使用邮箱登录\n')
+		else:
+			print("你的账号输入有问题，请重新登录")
+			return 0
+		post_url='https://www.zhihu.com/login/email'
+		postdata={
+			#'_xsrf': get_xsrf(),
+			'password': secret,
+			'remember_me': 'true',
+			'email': account,
+		}
 	try:
-		data=urllib.parse.urlencode(values)
-		request=urllib.request.Request(url,data,headers=ck)
-		response=urllib.request.urlopen(request)
-		print(response.read().decode('utf-8'))
-		print(data)
-		#json_str = json.loads(response.read().decode('utf-8'))
-            # 将获取到的数组转换成字符串
-			#print(json_str)
+		# 不需要验证码直接登录成功
+		login_page=session.post(post_url,data=postdata,headers=headers)
+		login_code=login_page.text
+		print(login_page.status_code)
+		print(login_code)
 	except:
-		print('未能获取数据')
-'''
-def xsrf():  
-	url = 'http://www.zhihu.com'  
-	zhihu = urllib.request.urlopen(url).read().decode('utf-8')
-	pattern = re.compile(r'name="_xsrf" value="(.*?)"/>')  
-	match = pattern.findall(zhihu)  
-	xsrf = match[0]  
-	print(xsrf)
-	return xsrf  
-
-'''
-def post_data():  
-	data = dict()  
-	data['_xsrf'] = xsrf  
-	data['email'] = 'duchengli@hotmail.com'  
-	data['password'] = 'dl820113'  
-	data['rememberme'] = 'y'     
-	post_data = up.urlencode(data).encode('utf-8') # 编译post数据  
-	return post_data  
-         
-hdr={'Accept':'*/*','Accept-Encoding':'gzip, deflate','Accept-Language':'zh-CN,zh;q=0.8','Connection':'keep-alive','Content-Length':'95','Content-Type':'application/x-www-form-urlencoded; charset=UTF-8','Host':'www.zhihu.com','Origin':'http://www.zhihu.com','RA-Sid':'DEADFC42-20150104-093648-9e5c2d-88ba9a','Referer':'http://www.zhihu.com/','User-Agent':'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36','X-Requested-With':'XMLHttpRequest'}  
-  
-#cookie上创建一个opener  
-def build_openner():  
-	cookie = CookieJar()  
-	cookie_handler = ur.HTTPCookieProcessor(cookie)  
-	opener = ur.build_opener(cookie_handler)  
-	return opener  
-
-
-xsrf = xsrf()  
-post_data = post_data()  
-opener = build_openner()  
-ur.install_opener(opener) # 安装opener  
-  
-def main():  
-	url = 'http://www.zhihu.com/login'  
-	req = ur.Request(url, post_data, hdr)  
-	response = opener.open(req)  
-	page = response.read()  
-	#print(page)  
-	# 测试成功与否  
-	testurl = 'http://www.zhihu.com/settings/account'  
-	req = ur.urlopen(testurl)  
-	print(req.read().decode('utf-8'))  
-      
-#main()
-'''
-xsrf()
+		# 需要输入验证码后才能登录成功
+		postdata['captcha']=get_captcha()
+		login_page=session.post(post_url,data=postdata,headers=headers)
+		login_code=eval(login_page.text)
+		print(login_code['msg'])
+	#print(session.cookies)
+	
+if __name__ == '__main__':
+	if isLogin():
+		print('您已经登录')
+	else:
+		account=input('请输入你的用户名\n>')
+		secret=input('请输入你的密码\n>')
+		login(secret,account)
+		login_code=session.get('https://www.zhihu.com/settings/profile',headers=headers,allow_redirects=False)
+		print(login_code.text)
+		
