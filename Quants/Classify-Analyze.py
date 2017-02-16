@@ -12,14 +12,14 @@ csvfile=open('d:\\ztb.csv','w',newline='')
 writer=csv.writer(csvfile)
 writer.writerow([u'板块名称',u'涨停板次数'])				
 tmpdict={}
-csv_reader=csv.reader(open('c:/industry_classified.csv'))
+csv_reader=csv.reader(open('c:/area_classified.csv'))
 concept=set(row[3] for row in csv_reader)
 
 for j in concept:
-	if j!='c_name':
+	if j!='area' and j!='':
 		tmp=set()
 		cnt=0
-		csv_reader=csv.reader(open('c:/industry_classified.csv'))
+		csv_reader=csv.reader(open('c:/area_classified.csv'))
 		tmp=set(row[1] for row in csv_reader if row[3]==j)
 		for k in tmp:
 			cnt=cnt+ztb(k)
