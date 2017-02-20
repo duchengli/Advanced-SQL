@@ -7,7 +7,7 @@ engine = create_engine('mssql+pymssql://sa:dl820113@127.0.0.1:1433/TUSHARE')
 
 def insert2db(code):
 	try:
-		df=ts.get_hist_data(code,start='2015-01-01',retry_count=50,pause=0)
+		df=ts.get_hist_data(code,start='2017-02-17',retry_count=50,pause=0)
 		df['code']=code
 		df.to_sql('Hist_Daily_Data',engine,if_exists='append')
 		print('股票代码'+j+'已经插入数据库')
