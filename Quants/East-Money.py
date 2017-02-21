@@ -3,10 +3,11 @@ import demjson
 import random
 import csv
 
+
 # 获取页数
 def get_pages_count():
-	url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=GG&sty=GDRS&st=6&sr=-1&p=1'
-	url += '&ps=50&js=var%20wPPmivFX={pages:(pc),data:[(x)]}&mkt=1&fd=2016-9-30&rt=49437052'
+	url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=GG&sty=GDRS&st=2&sr=-1&p=1'
+	url += '&ps=50&js=var%20LdzozHlk={pages:(pc),data:[(x)]}&mkt=1&fd=2016-12-31&rt=49588150'
 	wp = urllib.request.urlopen(url)
 	data = wp.read().decode('utf8')
 	start_pos = data.index('=')
@@ -19,8 +20,8 @@ def get_pages_count():
 def get_url_list(start,end):
 	url_list=[]
 	while(start<=end):
-		url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=GG&sty=GDRS&st=6&sr=-1&p=%d' %start
-		url += '&ps=50&js=var%20wPPmivFX={pages:(pc),data:[(x)]}&mkt=1&fd=2016-9-30&rt=49437052'
+		url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=GG&sty=GDRS&st=2&sr=-1&p=%d' %start
+		url += '&ps=50&js=var%20LdzozHlk={pages:(pc),data:[(x)]}&mkt=1&fd=2016-12-31&rt=49588150'
 		url_list.append(url)
 		start+=1
 	return url_list
