@@ -52,7 +52,7 @@ csvfile=open('d:\\rmfysszc.csv','w+',newline='',encoding='utf-8')
 writer=csv.writer(csvfile)
 writer.writerow([u'项目名称',u'法院',u'类别',u'所在地',u'成交结果',u'起拍价',u'发布日期'])
 listkeys=[]
-for page_number in range(1,173):
+for page_number in range(1,176):
 	getpages('http://www1.rmfysszc.gov.cn/projects.shtml?s=q&dh=3&cc=510100&c=510000&tt=111&fid=%2c%2c&gpstate=1&page='+str(page_number))
 csvfile.close()
 
