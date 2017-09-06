@@ -1,3 +1,1 @@
-str = r'C:\Programe File\Now'
-str
-print(str)
+print([x * x for x in range(1, 11) if x%2!=0])
