@@ -42,6 +42,7 @@ def get_page(pagenumber):
                 #解析单价
                 tmp7 = result.find('strong', class_='h-price').text.strip()
                 query = [title, tmp2[0], tmp2[1], tmp2[2], tmp2[3], tmp4, tmp5, tmp6, tmp7]
+                print(query)
                 writer.writerow(query)
 
             except:
@@ -50,7 +51,7 @@ def get_page(pagenumber):
 csvfile=open('d:\\touming.csv','w+',newline='')
 writer=csv.writer(csvfile)
 #esfkeys={}
-for i in range(1,100):
+for i in range(1,2):
     get_page(i)
 csvfile.close()
 
