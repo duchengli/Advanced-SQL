@@ -3,10 +3,11 @@
 
 # __author__ = 'Duchengli'
 
-import requests
+import  requests
 from bs4 import BeautifulSoup
-import lxml
-import csv
+import  lxml
+import  csv
+import time
 
 def get_page(pagenumber):
     page_url = 'https://www.taoguba.com.cn/default?pageNo=%d#9527' %pagenumber
@@ -28,11 +29,17 @@ def get_page(pagenumber):
         for result in results:
             try:
                 print(result.h2.a.text.strip())
+                print('https://www.taoguba.com.cn/'+ result.h2.a.get('href'))
 
 
             except:
                 print('有问题')
 
-for i in range(1,128):
+for i in range(1,31):
+    print('第%d页' %i)
+    print('\n')
+    print('----------------------------------------------------------------------------------------------------')
+    print('\n')
     get_page(i)
-    time.sleep(10)
+
+    #time.sleep(10)
