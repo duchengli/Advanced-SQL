@@ -9,8 +9,8 @@ import  lxml
 import  csv
 import time
 
-def get_page(pagenumber):
-    page_url = 'https://www.taoguba.com.cn/default?pageNo=%d#9527' %pagenumber
+def get_page(page_number):
+    page_url = 'https://www.taoguba.com.cn/default?pageNo=%d#9527' %page_number
 
     retry_time = 20
     for i in range(retry_time):
@@ -29,11 +29,8 @@ def get_page(pagenumber):
         for result in results:
             try:
                 print(result.h2.a.text.strip())
-
                 print('https://www.taoguba.com.cn/'+ result.h2.a.get('href'))
-
                 print('\n')
-
 
             except:
                 print('有问题')

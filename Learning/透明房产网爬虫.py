@@ -8,8 +8,8 @@ from bs4 import BeautifulSoup
 import lxml
 import csv
 
-def get_page(pagenumber):
-    page_url = 'http://esf.cdfgj.gov.cn/search?page=%d' %pagenumber
+def get_page(page_number):
+    page_url = 'http://esf.cdfgj.gov.cn/search?page=%d' %page_number
 
     retry_time = 20
     for i in range(retry_time):
