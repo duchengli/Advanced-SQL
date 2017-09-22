@@ -29,7 +29,10 @@ def get_page(pagenumber):
         for result in results:
             try:
                 print(result.h2.a.text.strip())
+
                 print('https://www.taoguba.com.cn/'+ result.h2.a.get('href'))
+
+                print('\n')
 
 
             except:
