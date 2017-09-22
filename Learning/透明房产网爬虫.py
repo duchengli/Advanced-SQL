@@ -51,7 +51,7 @@ def get_page(page_number):
 csvfile=open('d:\\touming.csv','w+',newline='')
 writer=csv.writer(csvfile)
 #esfkeys={}
-for i in range(1,2):
+for i in range(1,10):
     get_page(i)
 csvfile.close()
 
