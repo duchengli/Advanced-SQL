@@ -13,12 +13,19 @@ import random
 
 def get_page(page_number):
 
+    cookies = {}
+    raw_cookies='bdshare_firstime=1504517693631; UM_distinctid=15e4c3e20f0449-05e2995747fa85-40544130-1fa400-15e4c3e20f145b; CNZZDATA1574657=cnzz_eid%3D1553734631-1504512598-null%26ntime%3D1506492673; JSESSIONID=6886cb57-91a6-49dd-b6c9-7f74e3235c0d; tgbuser=1694795; tgbpwd=33F16FD721Dsld6cznj6vyhdjl'
+
+    for line in raw_cookies.split(';'):
+        key,value = line.split('=',1)
+        cookies[key] = value
+
     page_url = 'https://www.taoguba.com.cn/index?pageNo=%d&blockID=0&flag=1' % page_number
     retry_time = 20
 
     for i in range(retry_time):
         try:
-            r = requests.get(url=page_url)
+            r = requests.get(url=page_url, cookies=cookies)
             break
         except Exception:
             if i < retry_time - 1:
@@ -40,16 +47,16 @@ def get_page(page_number):
                 tmp_list = [title,author,create_date,reply_date,count,link]
                 print(tmp_list)
                 writer.writerow(tmp_list)
-        except Exception:
-            print(u'有问题')
+        except(TypeError, KeyError) as e:
+            pass
 
-csvfile = open('d:\\taoguba.CSV', 'w', newline='')
+csvfile = open('d:\\taoguba.CSV', 'w', newline='', encoding='utf-8')
 writer = csv.writer(csvfile)
 writer.writerow([u'title', u'author', u'create_date',u'reply_date', u'count', u'link'])
 
-for i in range(1, 20349):
+for i in range(1, 20350):
     print('第%d页' % i)
     get_page(i)
-    time.sleep(random.randint(5, 15))
+    time.sleep(random.randint(15, 30))
 
 csvfile.close()
