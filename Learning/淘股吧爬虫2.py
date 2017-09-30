@@ -41,8 +41,8 @@ def get_page(page_number):
                 title = result.find('li', class_='pcdj02').a.text.strip()  # 标题
                 link = 'https://www.taoguba.com.cn/' + result.find('li', class_='pcdj02').a.get('href')
                 author = result.find('li', class_='pcdj08').a.text.strip()  # 作者
-                create_date = result.find('li', class_='pcdj03').text.strip()  # 最后回帖时间
-                reply_date = result.find('li', class_='pcdj06').text.strip()  # 发帖时间
+                create_date = result.find('li', class_='pcdj06').text.strip()  # 发帖时间
+                reply_date = result.find('li', class_='pcdj03').text.strip()  # 最后回复时间
                 count = result.find('li', class_='pcdj04').text.strip()  # 回帖浏览
                 tmp_list = [title,author,create_date,reply_date,count,link]
                 print(tmp_list)
