@@ -54,7 +54,7 @@ csvfile = open('d:\\taoguba20170928(4).CSV', 'w', newline='', encoding='utf-8')
 writer = csv.writer(csvfile)
 writer.writerow([u'title', u'author', u'create_date',u'reply_date', u'count', u'link'])
 
-for i in range(13188, 20350):
+for i in range(14736, 20350):
     print('第%d页' % i)
     get_page(i)
     #time.sleep(random.randint(1,5))
