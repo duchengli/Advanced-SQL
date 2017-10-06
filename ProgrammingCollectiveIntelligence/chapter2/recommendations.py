@@ -109,6 +109,7 @@ def sim_pearson(prefs, p1, p2):
 print(critics['Lisa Rose']['Lady in the Water'])
 print(critics['Toby']['Snakes on a Plane'])
 print(sim_distance(critics,'Lisa Rose','Gene Seymour'))
+print(sim_pearson(critics,'Lisa Rose','Gene Seymour'))
 # # Returns the best matches for person from the prefs dictionary.
 # # Number of results and similarity function are optional params.
 # def topMatches(prefs,person,n=5,similarity=sim_pearson):
