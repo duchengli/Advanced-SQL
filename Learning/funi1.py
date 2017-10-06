@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # __author__ = 'Duchengli'
+# 透明房产网新房爬虫
+
 
 import requests
 from bs4 import BeautifulSoup
