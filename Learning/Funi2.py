@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 # __author__ = 'Duchengli'
+# 二手房爬虫
 
 import requests
 from bs4 import BeautifulSoup
 import lxml
-import csv
+import pickle
 
 def get_page(page_number):
     page_url = 'http://esf.cdfgj.gov.cn/search?page=%d' %page_number
@@ -42,17 +43,23 @@ def get_page(page_number):
                 #解析单价
                 tmp7 = result.find('strong', class_='h-price').text.strip()
                 query = [title, tmp2[0], tmp2[1], tmp2[2], tmp2[3], tmp4, tmp5, tmp6, tmp7]
-                print(query)
-                writer.writerow(query)
+                if title in esfkeys:
+                    pass
+                else:
+                    esfkeys[title]='inserted'
+                    print(query)
+                #writer.writerow(query)
 
             except:
                 print(title+'-'+'有问题')
 
-csvfile=open('d:\\touming.csv','w+',newline='')
-writer=csv.writer(csvfile)
-#esfkeys={}
-for i in range(1,10):
+#csvfile=open('d:\\touming.csv','w+',newline='')
+#writer=csv.writer(csvfile)
+esfkeys={}
+#esfkeys['钢管厂五区房源在售']='inserted'
+
+for i in range(1,2):
     get_page(i)
-csvfile.close()
+#csvfile.close()
 
 
