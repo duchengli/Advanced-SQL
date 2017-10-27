@@ -45,7 +45,7 @@ datafile.close()
 
 #loupanlist = []
 
-for i in range(1,332):
+for i in range(1,333):
     get_page(i)
 
 datafile = open('d:\\loupanlist.pkl', 'wb')
