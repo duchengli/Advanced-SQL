@@ -83,4 +83,31 @@ s4 = pd.concat([s1 * 5, s3])
 df1 = DataFrame(np.arange(6).reshape(3, 2), index=['a', 'b', 'c'],columns=['one', 'two'])
 df2 = DataFrame(5 + np.arange(4).reshape(2, 2), index=['a', 'c'],columns=['three', 'four'])
 #print(pd.concat([df1, df2], axis=1, keys=['level1', 'level2']))
-print(pd.concat({'level1': df1, 'level2': df2}, axis=1))
+#print(pd.concat({'level1': df1, 'level2': df2}, axis=1))
+
+df = DataFrame({'key1' : ['a', 'a', 'b', 'b', 'a'],'key2' : ['one', 'two', 'one', 'two', 'one'],'data1' : np.random.randn(5),'data2' : np.random.randn(5)})
+grouped = df['data1'].groupby(df['key1'])
+#print(df['data1'].groupby([df['key1'], df['key2']]).mean().unstack())
+#states = np.array(['Ohio', 'California', 'California', 'Ohio', 'Ohio'])
+#years = np.array([2005, 2005, 2006, 2005, 2006])
+#print(df['data1'].groupby([states, years]).mean())
+#for name, group in df.groupby('key1'):
+#    print(name)
+#    print(group)
+
+# for (k1, k2), group in df.groupby(['key1', 'key2']):
+#     print(k1, k2)
+#     print(group)
+
+# grouped = df.groupby(df.dtypes, axis=1)
+# print(dict(list(grouped)))
+
+# print(df.groupby(['key1', 'key2'])[['data2']].mean())
+
+people = DataFrame(np.random.randn(5, 5),columns=['a', 'b', 'c', 'd', 'e'],index=['Joe', 'Steve', 'Wes', 'Jim', 'Travis'])
+people.ix[2:3, ['b', 'c']] = np.nan
+print(people)
+mapping = {'a': 'red', 'b': 'red', 'c': 'blue','d': 'blue', 'e': 'red', 'f' : 'orange'}
+
+by_column = people.groupby(mapping, axis=1)
+print(by_column.sum())
