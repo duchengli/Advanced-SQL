@@ -43,7 +43,54 @@ ratings = pd.read_table('d:/pydata-book-master/ch02/movielens/ratings.dat', sep=
 mnames = ['movie_id', 'title', 'genres']
 movies = pd.read_table('d:/pydata-book-master/ch02/movielens/movies.dat', sep='::', header=None, names=mnames,engine='python')
 data = pd.merge(pd.merge(ratings, users), movies)
-print(data.describe())
+mean_ratings = data.pivot_table('rating', index='title',columns='gender', aggfunc='mean')
+ratings_by_title = data.groupby('title').size()
+#print(ratings_by_title[ratings_by_title >= 250])
+active_titles = ratings_by_title[ratings_by_title >= 250].index
+mean_ratings =mean_ratings.ix[active_titles]
+# print(active_titles)
+#print(mean_ratings.sort_values(by='F',ascending=False))
+mean_ratings['diff'] = mean_ratings['M'] - mean_ratings['F']
+sorted_by_diff = mean_ratings.sort_values(by='diff',ascending=False)
+#print(sorted_by_diff[:10])
+
+rating_std_by_title = data.groupby('title')['rating'].std()
+rating_std_by_title = rating_std_by_title.loc[active_titles]
+#print(rating_std_by_title.sort_values(ascending=False)[:10])
+
+import pandas as pd
+
+#names1880 = pd.read_csv('d:/pydata-book-master/ch02/names/yob1880.txt', names=['name', 'sex', 'births'])
+#print(names1880.head())
+#print(names1880.describe())
+#print(names1880.groupby('name').births.sum().sort_values(ascending=False))
+
+years = range(1880,2011)
+pieces = []
+columns = ['name', 'sex', 'births']
+
+for year in years:
+    path='d:/pydata-book-master/ch02/names/yob%d.txt' %year
+    frame = pd.read_csv(path,names=columns)
+    frame['year']=year
+    pieces.append(frame)
+
+names = pd.concat(pieces, ignore_index=True)
+
+#print(len(names))
+#print(names.groupby('name').births.sum().sort_values(ascending=False))
+#print(names.pivot_table('births',index='year',columns='sex',aggfunc=sum).ix[2006:2010,'F':'M'])
+
+#total_births = names.pivot_table('births',index='year',columns='sex',aggfunc=sum)
+
+def add_prop(group):
+    births =group.births.astype(float)
+    group['prop']=births/births.sum()
+    return group
+
+names = names.groupby(['year', 'sex']).apply(add_prop)
+#print(names.head())
+print(names.groupby(['year', 'sex']).prop.sum())
 # # from pandas import Series, DataFrame
 # # import pandas as pd
 # # import numpy as np
