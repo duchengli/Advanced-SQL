@@ -56,7 +56,7 @@ post_lists = []
 content_lists = []
 
 #第一步是爬取帖子的超链接，构建post_links超链接列表
-for i in range(1, 3):
+for i in range(1, 10):
     get_href(i)
 print('一共爬取了%d条帖子' %len(post_lists))
 
@@ -67,3 +67,4 @@ for post_list in post_lists:
 
 fobj=open("content.txt",'w',encoding='utf-8')
 fobj.writelines(('%s%s'%(str(items),os.linesep) for items in content_lists))
+fobj.close()
