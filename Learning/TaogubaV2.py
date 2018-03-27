@@ -55,14 +55,15 @@ def save_post_texts(post):
     if r.status_code == 200:
         soup = BeautifulSoup(r.text, 'lxml')
         result = soup.find('div', class_='p_coten')
-        try:
-            f = open(file_name,'a+',encoding='utf-8')
-            f.write(result.text)
-            f.close()
-        except FileNotFoundError:
-            f = open(file_name, 'w+', encoding='utf-8')
-            f.write(result.text)
-            f.close()
+        if result:
+            try:
+                f = open(file_name,'a+',encoding='utf-8')
+                f.write(result.text)
+                f.close()
+            except FileNotFoundError:
+                f = open(file_name, 'w+', encoding='utf-8')
+                f.write(result.text)
+                f.close()
 
 os.chdir(r'd:\post_data')
 post_lists = []
@@ -70,6 +71,7 @@ for i in range(1, 20):
     get_post_lists(i)
 
 print('解析完毕，一共有%d条帖子需要爬取' %len(post_lists))
+j = 1
 for post in post_lists:
     print('正在爬取第%d条帖子' %j)
     save_post_texts(post)
