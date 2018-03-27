@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# __author__ = 'Duchengli'
+# 淘股吧帖子爬虫V2
+# 可以根据发布时间生成不同的文档
+# 2018-03-27第一次创建
+
+import requests
+from bs4 import BeautifulSoup
+import lxml
+import os
+
+#get_post_lists用于获取帖子列表，包括标题，发帖时间和帖子链接
+def get_post_lists(page_number):
+    page_url = 'https://www.taoguba.com.cn/index?pageNo=%d&blockID=1&flag=1' % page_number
+    retry_time = 20
+    for i in range(retry_time):
+        try:
+            r = requests.get(page_url)
+            break
+        except:
+            if i < retry_time - 1:
+                continue
+            else:
+                print('发生网络错误，请重新爬取')
+
+    if r.status_code == 200:
+        soup = BeautifulSoup(r.text, 'lxml')
+        results = soup.find_all('li', class_='pcdj02')
+        for result in results:
+            try:
+                post_title = result.a.text
+                post_date = result.parent.find('li',class_ = 'pcdj06').text
+                post_link = 'https://www.taoguba.com.cn/' + result.a.get('href')
+                post_lists.append((post_title,post_date,post_link))
+            except:
+                pass
+
+#save_post_texts以日期为文件名保存当日帖子的内容，参数post是一个元组，标题，发帖时间和帖子链接
+def save_post_texts(post):
+    file_name = os.getcwd() + '\\' + post[1] + '.txt'
+
+    retry_time = 20
+    for i in range(retry_time):
+        try:
+            r = requests.get(url=post[2])
+            break
+        except:
+            if i < retry_time - 1:
+                continue
+            else:
+                print('发生网络错误，请重新爬取')
+
+    if r.status_code == 200:
+        soup = BeautifulSoup(r.text, 'lxml')
+        result = soup.find('div', class_='p_coten')
+        try:
+            f = open(file_name,'a+',encoding='utf-8')
+            f.write(result.text)
+            f.close()
+        except FileNotFoundError:
+            f = open(file_name, 'w+', encoding='utf-8')
+            f.write(result.text)
+            f.close()
+
+os.chdir(r'd:\post_data')
+post_lists = []
+for i in range(1, 20):
+    get_post_lists(i)
+
+print('解析完毕，一共有%d条帖子需要爬取' %len(post_lists))
+for post in post_lists:
+    print('正在爬取第%d条帖子' %j)
+    save_post_texts(post)
+    j = j + 1
