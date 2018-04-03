@@ -28,14 +28,15 @@ def get_post_lists(page_number):
     if r.status_code == 200:
         soup = BeautifulSoup(r.text, 'lxml')
         results = soup.find_all('li', class_='pcdj02')
-        for result in results:
-            try:
-                post_title = result.a.text
-                post_date = result.parent.find('li',class_ = 'pcdj06').text
-                post_link = 'https://www.taoguba.com.cn/' + result.a.get('href')
-                post_lists.append((post_title,post_date,post_link))
-            except:
-                pass
+        if results:
+            for result in results:
+                try:
+                    post_title = result.a.text
+                    post_date = result.parent.find('li',class_ = 'pcdj06').text
+                    post_link = 'https://www.taoguba.com.cn/' + result.a.get('href')
+                    post_lists.append((post_title,post_date,post_link))
+                except:
+                    pass
 
 #save_post_texts以日期为文件名保存当日帖子的内容，参数post是一个元组，标题，发帖时间和帖子链接
 def save_post_texts(post):
@@ -66,12 +67,13 @@ def save_post_texts(post):
                 f.write(result.text)
                 f.close()
 
-os.chdir(r'd:\post_data')
+os.chdir(r'd:\Spider')
 post_lists = []
 err_lists = []
 j = 1
 
-for i in range(1, 40):
+for i in range(1,3):
+    print('正在分析第%d页' % i)
     get_post_lists(i)
 print('解析完毕，一共有%d条帖子需要爬取' %len(post_lists))
 
