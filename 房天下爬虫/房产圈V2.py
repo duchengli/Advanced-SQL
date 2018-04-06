@@ -7,16 +7,18 @@ import requests
 from bs4 import BeautifulSoup
 import lxml
 import os
+import time
 
-#读取房产快讯数据存档数据
+#读取房产圈数据存档数据
 load_data = []
-with open('房产快讯数据存档.txt','r',encoding='utf-8') as f:
+with open('房产圈数据存档.txt','r',encoding='utf-8') as f:
     for line in f.readlines():
         load_data.append(line[:-1])
-#此时load_data已经有数据了
+# #此时load_data已经有数据了
 
-def get_fckx(page_number):
-    page_url = 'http://news.cd.fang.com/gdxw/2018-4-06/%d.html' % page_number
+def get_fcq(page_number):
+    time.sleep(3)
+    page_url = 'http://news.cd.fang.com/more/201312398/%d.html' % page_number
     retry_time = 20
     for i in range(retry_time):
         try:
@@ -43,17 +45,17 @@ def get_fckx(page_number):
             except:
                 pass
 
-for i in range(1, 51):
-#    print('正在抓取第%d页' %i)
-    get_fckx(i)
+for i in range(1, 251):
+    print('正在抓取第%d页' %i)
+    get_fcq(i)
 
 #将改变后的load_data写回原来的文档,因为此时load_data不仅包括了新数据还包括了原来的数据，所用不能用a方法，只能用w方法
-fobj=open("房产快讯数据存档.txt",'w',encoding='utf-8')
+fobj=open("房产圈数据存档.txt",'w',encoding='utf-8')
 fobj.writelines(str(items)+'\n' for items in load_data)
 fobj.close()
 
 #_________________________________________________________________
 #以下是第一次创建记录文件的时候才用，正常情况下不使用，除非记录文件出问题了
-# fobj=open("房产快讯数据存档.txt",'a+',encoding='utf-8')
+# fobj=open("房产圈数据存档.txt",'a+',encoding='utf-8')
 # fobj.writelines(str(items)+'\n' for items in load_data)
 # fobj.close()
