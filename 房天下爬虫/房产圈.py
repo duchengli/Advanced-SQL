@@ -40,9 +40,8 @@ newslists=[]
 for i in range(1, 251):
     print('正在抓取第%d页' %i)
     get_fcq(i)
-    
-newssets=set(newslists)
-print('一共抓取了%d条新闻' %len(newssets))
-for k in range(0,len(newssets)):
-    print(newssets[k])
+
+print('一共抓取了%d条新闻' %len(newslists))
+for k in range(0,len(newslists)):
+    print(newslists[k])
 #    print('\n')
