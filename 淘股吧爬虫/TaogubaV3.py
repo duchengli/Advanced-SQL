@@ -23,7 +23,7 @@ def get_post_lists(page_number):
             if i < retry_time - 1:
                 continue
             else:
-                pass
+                break
 
     if r.status_code == 200:
         soup = BeautifulSoup(r.text, 'lxml')
@@ -72,7 +72,7 @@ post_lists = []
 err_lists = []
 j = 1
 
-for i in range(1,3):
+for i in range(1,20):
     print('正在分析第%d页' % i)
     get_post_lists(i)
 print('解析完毕，一共有%d条帖子需要爬取' %len(post_lists))
