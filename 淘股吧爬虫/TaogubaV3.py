@@ -72,7 +72,7 @@ post_lists = []
 err_lists = []
 j = 1
 
-for i in range(1,20):
+for i in range(1,21):
     print('正在分析第%d页' % i)
     get_post_lists(i)
 print('解析完毕，一共有%d条帖子需要爬取' %len(post_lists))
