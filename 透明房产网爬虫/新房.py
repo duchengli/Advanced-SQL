@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 import lxml
 import pickle
+import time
 
 
 def get_page(page_number):
