@@ -66,12 +66,12 @@ def get_post_lists(page_number):
                         if post_link in load_data:
                             pass
                         else:
-#                            print(post_title, post_date, post_link, post_view, post_reply, post_like)
+                            print(post_title, post_date, post_link, post_view, post_reply, post_like)
                             load_data.append(post_link)
 
 #____________________________________________________________________________________________________________
                             f = open('热帖哈哈哈.txt', 'a+', encoding='utf-8')
-                            f.write([post_title, post_date, post_link, post_view, post_reply, post_like])
+                            f.write(post_title+'    '+post_date+'    '+post_link+'    '+str(post_view)+'    '+str(post_reply)+'    '+str(post_like)+'\n')
                             f.close()
 # ____________________________________________________________________________________________________________
 
