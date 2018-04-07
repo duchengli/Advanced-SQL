@@ -62,7 +62,7 @@ def get_post_lists(page_number):
                     post_like = int(tmp_str.split('/')[3])
 
 #                    print(post_title, post_date, post_link, post_view, post_reply, post_like)
-                    if int(post_reply>0 and post_like>0):#判断是否是热帖
+                    if post_reply>0 and post_like>0:#判断是否是热帖
                         if post_link in load_data:
                             pass
                         else:
@@ -81,7 +81,7 @@ def get_post_lists(page_number):
     else:
         print('第%d页爬取失败' %page_number)
 
-for i in range(1,2):
+for i in range(1,20892):
 #    print('正在分析第%d页' % i)
     get_post_lists(i)
 
