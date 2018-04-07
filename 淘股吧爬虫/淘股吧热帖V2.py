@@ -17,6 +17,15 @@ with open('淘股吧热帖存档.txt','r',encoding='utf-8') as f:
     for line in f.readlines():
         load_data.append(line[:-1])
 
+
+#加入模拟登陆的过程
+cookie_str = r'bdshare_firstime=1522460659432; Hm_lvt_cc6a63a887a7d811c92b7cc41c441837=1522507696,1522590480,1523017246,1523078610; UM_distinctid=16279ba11684e2-0ecc6593cd7cea-4c322073-1aeaa0-16279ba116a119a; CNZZDATA1574657=cnzz_eid%3D1699818351-1522459046-https%253A%252F%252Fwww.baidu.com%252F%26ntime%3D1523078631; Hm_lpvt_cc6a63a887a7d811c92b7cc41c441837=1523083653; notActiveUserIDPC=25088186; JSESSIONID=93b01f72-6511-41cd-960a-6e35d9b49fa5; tgbuser=1694795; tgbpwd=2A1FE2398FBsld6cznj6vyhdjl'
+#把cookie字符串处理成字典，以便接下来使用
+cookies = {}
+for line in cookie_str.split(';'):
+    key, value = line.split('=', 1)
+    cookies[key] = value
+
 #get_post_lists用于获取帖子列表，包括标题，发帖时间和帖子链接
 def get_post_lists(page_number):
     time.sleep(2)
@@ -24,7 +33,7 @@ def get_post_lists(page_number):
     retry_time = 5
     for i in range(retry_time):
         try:
-            r = requests.get(page_url,timeout=5)
+            r = requests.get(page_url,timeout=5,cookies=cookies)
             break
         except:
             if i < retry_time - 1:
