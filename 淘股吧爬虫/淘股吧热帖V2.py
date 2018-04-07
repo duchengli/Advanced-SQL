@@ -28,7 +28,7 @@ for line in cookie_str.split(';'):
 
 #get_post_lists用于获取帖子列表，包括标题，发帖时间和帖子链接
 def get_post_lists(page_number):
-    time.sleep(2)
+    time.sleep(0.1)
     page_url = 'https://www.taoguba.com.cn/index?pageNo=%d&blockID=1&flag=1' % page_number
     retry_time = 5
     for i in range(retry_time):
@@ -51,24 +51,37 @@ def get_post_lists(page_number):
                     post_title = result.a.text
                     post_date = result.parent.find('li',class_ = 'pcdj06').text
                     post_link = 'https://www.taoguba.com.cn/' + result.a.get('href')
+                    #获取存储回帖/浏览/加油券三项数据
+                    post_reply = int(result.parent.find('li',class_ = 'pcdj04').text.split('/')[0])
+                    post_view = int(result.parent.find('li',class_ = 'pcdj04').text.split('/')[1])
+
                     likes = result.parent.find_all('li',class_ = 'pcdj05')
-#tmp_str用于存储回帖/浏览/加油券三项数据
                     tmp_str = ''
                     for like in likes:
                         tmp_str = tmp_str + '/' + like.text
-#                    print(post_title, post_date, post_link, tmp_str.split('/')[1], tmp_str.split('/')[2],tmp_str.split('/')[3])
-                    if int(tmp_str.split('/')[1])>0 and int(tmp_str.split('/')[3])>0:#判断是否是热帖
+                    post_like = int(tmp_str.split('/')[3])
+
+#                    print(post_title, post_date, post_link, post_view, post_reply, post_like)
+                    if int(post_reply>0 and post_like>0):#判断是否是热帖
                         if post_link in load_data:
                             pass
                         else:
-                            print(post_title, post_date, post_link, tmp_str.split('/')[1], tmp_str.split('/')[2],tmp_str.split('/')[3])
+#                            print(post_title, post_date, post_link, post_view, post_reply, post_like)
                             load_data.append(post_link)
+
+#____________________________________________________________________________________________________________
+                            f = open('热帖哈哈哈.txt', 'a+', encoding='utf-8')
+                            f.write([post_title, post_date, post_link, post_view, post_reply, post_like])
+                            f.close()
+# ____________________________________________________________________________________________________________
+
+
                 except:
                     pass
     else:
         print('第%d页爬取失败' %page_number)
 
-for i in range(1,20890):
+for i in range(1,2):
 #    print('正在分析第%d页' % i)
     get_post_lists(i)
 
