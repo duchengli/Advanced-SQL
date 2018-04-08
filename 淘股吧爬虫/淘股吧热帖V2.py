@@ -81,7 +81,7 @@ def get_post_lists(page_number):
     else:
         print('第%d页爬取失败' %page_number)
 
-for i in range(1,200):
+for i in range(1,500):
 #    print('正在分析第%d页' % i)
     get_post_lists(i)
 
