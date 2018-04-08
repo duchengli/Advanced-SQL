@@ -48,7 +48,7 @@ loupanlist = pickle.load(datafile)
 datafile.close()
 
 # 爬取新盘
-for i in range(1, 341):
+for i in range(1, 342):
     get_page(i)
 
 # 保存最新的新盘列表
