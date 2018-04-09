@@ -34,7 +34,19 @@ def get_post_lists(page_number):
                     post_title = result.a.text
                     post_date = result.parent.find('li',class_ = 'pcdj06').text
                     post_link = 'https://www.taoguba.com.cn/' + result.a.get('href')
-                    post_lists.append((post_title,post_date,post_link))
+                    # 获取存储回帖/浏览/加油券三项数据
+                    post_reply = int(result.parent.find('li', class_='pcdj04').text.split('/')[0])
+                    post_view = int(result.parent.find('li', class_='pcdj04').text.split('/')[1])
+
+                    likes = result.parent.find_all('li', class_='pcdj05')
+                    tmp_str = ''
+                    for like in likes:
+                        tmp_str = tmp_str + '/' + like.text
+                    post_like = int(tmp_str.split('/')[3])
+
+                    if post_reply > 0 and post_like > 0:  # 判断是否是热帖
+                        print(post_title, post_date, post_link, post_view, post_reply, post_like)
+                        post_lists.append((post_title,post_date,post_link))
                 except:
                     pass
 
@@ -72,8 +84,8 @@ post_lists = []
 err_lists = []
 j = 1
 
-for i in range(1,21):
-    print('正在分析第%d页' % i)
+for i in range(1,100):
+#    print('正在分析第%d页' % i)
     get_post_lists(i)
 print('解析完毕，一共有%d条帖子需要爬取' %len(post_lists))
 
