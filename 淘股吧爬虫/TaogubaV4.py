@@ -84,13 +84,13 @@ post_lists = []
 err_lists = []
 j = 1
 
-for i in range(1,100):
+for i in range(1,5):
 #    print('正在分析第%d页' % i)
     get_post_lists(i)
 print('解析完毕，一共有%d条帖子需要爬取' %len(post_lists))
 
 for post in post_lists:
-    print('正在爬取第%d条帖子' %j)
+#    print('正在爬取第%d条帖子' %j)
     save_post_texts(post)
     j = j + 1
 print('爬取完毕，一共爬取了%d条帖子，成功%d条，失败%d条' %(len(post_lists),len(post_lists)-len(err_lists),len(err_lists)))
