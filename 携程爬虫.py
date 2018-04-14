@@ -15,8 +15,18 @@ class Ctrip:
         req = requests.get(url=url,timeout=5,headers=headers)
         content = req.text
         dict_content = json.loads(content, encoding='UTF-8')
-        for k,v in dict_content.items():
-            print(str(k)+":"+str(v))
+        products = dict_content.get('fis')
+        # for k,v in fis[0].items():
+        #     print(str(k)+":"+str(v))
+        #fis[0].get('scs'))
+        # if 'scs' in product.keys():
+        #     print(product.get('scs'))
+        #     print('\n')
+        #     # print('起飞机场:%s,到达机场%s' %(product.get('dcc'),product.get('acc')))
+        for p in products:
+            if p.get('alc')=='CA':
+                print('起飞机场:%s,到达机场%s,航班号%s,起飞时间%s,到达时间%s' %(p.get('dcc'),p.get('acc'),p.get('fn'),p.get('dt')[11:],p.get('at')[11:]))
+
 
 ctrip = Ctrip()
 ctrip.get_json()
