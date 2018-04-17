@@ -18,7 +18,7 @@ with open('房产快讯数据存档.txt','r',encoding='utf-8') as f:
 
 def get_fckx(page_number):
     time.sleep(3)
-    page_url = 'http://news.cd.fang.com/gdxw/2018-4-14/%d.html' % page_number
+    page_url = 'http://news.cd.fang.com/gdxw/2018-4-17/%d.html' % page_number
     retry_time = 20
     for i in range(retry_time):
         try:
