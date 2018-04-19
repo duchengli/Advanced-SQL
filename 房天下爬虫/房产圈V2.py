@@ -17,9 +17,9 @@ with open('房产圈数据存档.txt','r',encoding='utf-8') as f:
 # #此时load_data已经有数据了
 
 def get_fcq(page_number):
-    time.sleep(3)
+    time.sleep(1)
     page_url = 'http://news.cd.fang.com/more/201312398/%d.html' % page_number
-    retry_time = 20
+    retry_time = 10
     for i in range(retry_time):
         try:
             r = requests.get(url=page_url)
