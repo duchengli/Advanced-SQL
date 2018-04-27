@@ -55,9 +55,10 @@ def get_page(page_number,qy):
                     link = 'http://esf.cdfgj.gov.cn'+result.h2.a.get('href')#解析房源连接
                     total_price = int(result.find('strong', class_='total-price').text.strip().replace('万',''))#解析总价
                     xqm = result.find('p',class_='p_hx').next_sibling.next_sibling.text.strip().split(' ')[0]#解析小区名称
+                    built_year = result.find('p',class_='p_hx').text.strip().split(' ')[-1]
 #                    print(xqm,id,total_price,link)
 #                    esf[id]=total_price
-                    esf_list.append((id,xqm,total_price,link))
+                    esf_list.append((id,xqm,built_year,total_price,link))
             except:
                 pass
     print('%s 页已经处理完毕' %page_number)
@@ -68,10 +69,10 @@ esf_dict = {}
 err_page = []
 
 for i in range(1,count_page(510105)+1):
-#for i in range(1,5):
+#for i in range(1,2):
     get_page(i,510105)
 # print(esf)
 # print(err_page)
 
-for i in sorted(esf_list, key=lambda  x:x[2], reverse=True):
+for i in sorted(esf_list, key=lambda  x:x[2], reverse=False):
     print(i)
