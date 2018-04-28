@@ -58,7 +58,7 @@ def get_page(page_number,qy):
                     built_year = result.find('p',class_='p_hx').text.strip().split(' ')[-1]
 #                    print(xqm,id,total_price,link)
 #                    esf[id]=total_price
-                    esf_list.append((id,xqm,built_year,total_price,link))
+                    esf_list.append(id,xqm,built_year,total_price,link)
             except:
                 pass
     print('%s 页已经处理完毕' %page_number)
@@ -74,5 +74,9 @@ for i in range(1,count_page(510105)+1):
 # print(esf)
 # print(err_page)
 
-for i in sorted(esf_list, key=lambda  x:x[2], reverse=False):
-    print(i)
+# for i in sorted(esf_list, key=lambda  x:x[3], reverse=True):
+#     print(i)
+load_data = []
+fobj = open('透明房产网二手房存档.txt','a+',encoding='utf-8')
+fobj.writelines(str(items)+'\n' for items in esf_list)
+fobj.close()
