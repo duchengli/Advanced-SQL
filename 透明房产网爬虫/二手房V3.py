@@ -12,6 +12,7 @@ import random
 import re
 import math
 import csv
+import pickle
 
 #根据第一页上的信息条数获取翻页次数
 def count_page(qy):
@@ -32,7 +33,6 @@ def count_page(qy):
         total_count = int(re.sub("\D", "",result.text))
         total_page = math.ceil(total_count/10)
         return total_page
-
 #获取页面信息
 def get_page(page_number,qy):
     page_url = 'http://esf.cdfgj.gov.cn/search?page=%d&qy=%d&mj=100,200' %(page_number,qy)
@@ -58,13 +58,29 @@ def get_page(page_number,qy):
                     price = int(result.find('strong', class_='h-price').text.strip().replace('元/平',''))#解析单价
                     xqm = result.find('p',class_='p_hx').next_sibling.next_sibling.text.strip().split(' ')[0]#解析小区名称
                     built_year = result.find('p',class_='p_hx').text.strip().split(' ')[-1]
-                    esf.append([id,xqm,built_year,total_price,price,link])
+                    update_date_str = re.search(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2})",result.find('p', class_='p_gx').text).group(0)
+
+                    if id in esf.keys():
+                        if time.strptime(update_date_str, "%Y-%m-%d %H:%M:%S") > time.strptime(esf[id][5], "%Y-%m-%d %H:%M:%S"):#爬取的时间后于存储的时间，则表示有更新
+                            esf[id] = [xqm, built_year, total_price, price, link, update_date_str]#先用最新的数据来更新字典,然后根据价格来输出
+                            if total_price > esf[id][2]:
+                                print([id, xqm, built_year, total_price, price, link, update_date_str, '调涨'])
+                            else:
+                                print([id, xqm, built_year, total_price, price, link, update_date_str, '调降'])
+                        else:
+                            pass
+                    else:
+                        print([id, xqm, built_year, total_price, price, link, update_date_str, '新上房源'])
+                        esf[id] = [xqm, built_year, total_price, price, link, update_date_str]
             except:
                 pass
-    print('%s 页已经爬取完毕' %page_number)
+    #print('%s 页已经爬取完毕' %page_number)
     time.sleep(1)
 
-esf = []
+#读取存档数据
+datafile = open('esflist.pkl', 'rb')
+esf = pickle.load(datafile)
+datafile.close()
 
 print('正在爬取青羊区的二手房数据\n')
 print('青羊区一共有%d页需要爬取\n' %count_page(510105))
@@ -76,8 +92,7 @@ print('高新区一共有%d页需要爬取\n' %count_page(510109))
 for i in range(1,count_page(510109)+1):#通过count_page(510105)获取高新区的二手房页数
     get_page(i,510109)#循环爬取高新区的二手房数据
 
-#将数据写入CSV文件用于后期的增量和变化分析
-with open('透明房产网二手房存档.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    for row in esf:
-        writer.writerow(row)
+#写入更新以后的数据
+datafile = open('esflist.pkl', 'wb')
+pickle.dump(esf, datafile)
+datafile.close()
