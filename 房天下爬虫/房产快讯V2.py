@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import lxml
 import os
 import time
+import datetime
 
 #读取房产快讯数据存档数据
 load_data = []
@@ -16,9 +17,23 @@ with open('房产快讯数据存档.txt','r',encoding='utf-8') as f:
         load_data.append(line[:-1])
 #此时load_data已经有数据了
 
+def get_date():
+    year = str(datetime.datetime.now().year)
+    month = str(datetime.datetime.now().month)
+    day = str(datetime.datetime.now().day)
+    if len(day) == 1:
+        return year + '-' + month + '-' + '0' + day
+    else:
+        return year + '-' + month + '-' + day
+
 def get_fckx(page_number):
     time.sleep(1)
-    page_url = 'http://news.cd.fang.com/gdxw/2018-4-28/%d.html' % page_number
+#   date = '2018-4-29'#手动输入日期
+    date = get_date()
+#    page_url = 'http://news.cd.fang.com/gdxw/2018-4-29/%d.html' % page_number
+    page_url = 'http://news.cd.fang.com/gdxw/%s/%d.html' %(date,page_number)
+    print(page_url)
+
     retry_time = 10
     for i in range(retry_time):
         try:

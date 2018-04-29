@@ -11,6 +11,24 @@ import lxml
 import pickle
 import time
 
+def count_page():
+    page_url = 'http://www.funi.com/loupan/region_0_0_0_0_1'
+    retry_time = 20
+    for i in range(retry_time):
+        try:
+            r = requests.get(url=page_url)
+            break
+        except:
+            if i < retry_time - 1:
+                continue
+            else:
+                break
+    if r.status_code == 200:
+        soup = BeautifulSoup(r.text,'lxml')
+        r1 = soup.find('div', class_='pages')
+        r2 = r1.find_all('a')
+        r3 = list(r2)[-2].text
+        return int(r3)
 
 def get_page(page_number):
     page_url = 'http://www.funi.com/loupan/region_0_0_0_0_%d' % page_number
@@ -48,7 +66,9 @@ loupanlist = pickle.load(datafile)
 datafile.close()
 
 # 爬取新盘
-for i in range(1, 343):
+#for i in range(1, 343):
+for i in range(1, count_page()+1):
+    print('正在抓取第%d页' % i)
     get_page(i)
 
 # 保存最新的新盘列表
