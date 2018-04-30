@@ -66,12 +66,14 @@ loupanlist = pickle.load(datafile)
 datafile.close()
 
 # 爬取新盘
+print('一共有%d页需要爬取' %count_page())
 #for i in range(1, 343):
 for i in range(1, count_page()+1):
-    print('正在抓取第%d页' % i)
+#    print('正在抓取第%d页' % i)
     get_page(i)
 
 # 保存最新的新盘列表
 datafile = open('loupanlist.pkl', 'wb')
 pickle.dump(loupanlist, datafile)
 datafile.close()
+print('爬取完毕数据已经保存')
