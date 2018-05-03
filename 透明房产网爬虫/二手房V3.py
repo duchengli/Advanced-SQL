@@ -17,7 +17,7 @@ import pickle
 #根据第一页上的信息条数获取翻页次数
 def count_page(qy):
     page_url = 'http://esf.cdfgj.gov.cn/search?page=1&qy=%d&mj=100,200' %qy
-    retry_time = 20
+    retry_time = 10
     for i in range(retry_time):
         try:
             r = requests.get(url=page_url)
@@ -45,7 +45,7 @@ def get_page(page_number,qy):
             if i < retry_time - 1:
                 continue
             else:
-                pass
+                break
     if r.status_code == 200:
         soup = BeautifulSoup(r.text,'lxml')
         results = soup.find_all('div', class_='pan-item clearfix')
