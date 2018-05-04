@@ -19,5 +19,6 @@ esf = pickle.load(datafile)
 datafile.close()
 
 for k,v in esf.items():
-    if '龙湖三千' in v[0]:
+#    if '龙湖三千' in v[0]:
+    if int(v[2]) > 100 and int(v[2]) < 120:
         print(k,v)

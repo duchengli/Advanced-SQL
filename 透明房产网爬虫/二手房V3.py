@@ -85,18 +85,33 @@ datafile.close()
 
 print('正在爬取青羊区的二手房数据\n')
 print('青羊区一共有%d页需要爬取\n' %count_page(510105))
-for i in range(1,count_page(510105)+1):#通过count_page(510105)获取青羊区的二手房页数
-    get_page(i,510105)#循环爬取青羊区的二手房数据
+for i in range(1,count_page(510105)+1):
+    get_page(i,510105)
 
 print('正在爬取高新区的二手房数据\n')
 print('高新区一共有%d页需要爬取\n' %count_page(510109))
-for i in range(1,count_page(510109)+1):#通过count_page(510105)获取高新区的二手房页数
-    get_page(i,510109)#循环爬取高新区的二手房数据
+for i in range(1,count_page(510109)+1):
+    get_page(i,510109)
 
 print('正在爬取成华区的二手房数据\n')
 print('成华区一共有%d页需要爬取\n' %count_page(510108))
-for i in range(1,count_page(510108)+1):#通过count_page(510108)获取成华区的二手房页数
-    get_page(i,510108)#循环爬取成华区的二手房数据
+for i in range(1,count_page(510108)+1):
+    get_page(i,510108)
+
+print('正在爬取锦江区的二手房数据\n')
+print('锦江区一共有%d页需要爬取\n' %count_page(510104))
+for i in range(1,count_page(510104)+1):
+    get_page(i,510104)
+
+print('正在爬取金牛区的二手房数据\n')
+print('金牛区一共有%d页需要爬取\n' %count_page(510106))
+for i in range(1,count_page(510106)+1):
+    get_page(i,510106)
+
+print('正在爬取武侯区的二手房数据\n')
+print('武侯区一共有%d页需要爬取\n' %count_page(510107))
+for i in range(1,count_page(510107)+1):
+    get_page(i,510107)
 
 #写入更新以后的数据
 datafile = open('esflist.pkl', 'wb')
