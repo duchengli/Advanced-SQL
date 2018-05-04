@@ -62,11 +62,12 @@ def get_page(page_number,qy):
 
                     if id in esf.keys():
                         if time.strptime(update_date_str, "%Y-%m-%d %H:%M:%S") > time.strptime(esf[id][5], "%Y-%m-%d %H:%M:%S"):#爬取的时间后于存储的时间，则表示有更新
-                            esf[id] = [xqm, built_year, total_price, price, link, update_date_str]#先用最新的数据来更新字典,然后根据价格来输出
+                            #esf[id] = [xqm, built_year, total_price, price, link, update_date_str]#先用最新的数据来更新字典,然后根据价格来输出
                             if total_price > esf[id][2]:
                                 print([id, xqm, built_year, total_price, price, link, update_date_str, '调涨'])
                             else:
                                 print([id, xqm, built_year, total_price, price, link, update_date_str, '调降'])
+                            esf[id] = [xqm, built_year, total_price, price, link,update_date_str]  # 先用最新的数据来更新字典,然后根据价格来输出
                         else:
                             pass
                     else:
@@ -91,6 +92,11 @@ print('正在爬取高新区的二手房数据\n')
 print('高新区一共有%d页需要爬取\n' %count_page(510109))
 for i in range(1,count_page(510109)+1):#通过count_page(510105)获取高新区的二手房页数
     get_page(i,510109)#循环爬取高新区的二手房数据
+
+print('正在爬取成华区的二手房数据\n')
+print('成华区一共有%d页需要爬取\n' %count_page(510108))
+for i in range(1,count_page(510108)+1):#通过count_page(510108)获取成华区的二手房页数
+    get_page(i,510108)#循环爬取成华区的二手房数据
 
 #写入更新以后的数据
 datafile = open('esflist.pkl', 'wb')
