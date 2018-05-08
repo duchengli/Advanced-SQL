@@ -60,19 +60,20 @@ def get_page(page_number,qy):
                     built_year = result.find('p',class_='p_hx').text.strip().split(' ')[-1]
                     update_date_str = re.search(r"(\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2})",result.find('p', class_='p_gx').text).group(0)
 
-                    if id in esf.keys():
-                        if time.strptime(update_date_str, "%Y-%m-%d %H:%M:%S") > time.strptime(esf[id][5], "%Y-%m-%d %H:%M:%S"):#爬取的时间后于存储的时间，则表示有更新
-                            #esf[id] = [xqm, built_year, total_price, price, link, update_date_str]#先用最新的数据来更新字典,然后根据价格来输出
-                            if total_price > esf[id][2]:
-                                print([id, xqm, built_year, total_price, price, link, update_date_str, '调涨'])
+                    if price <= 12500:
+                        if id in esf.keys():
+                            if time.strptime(update_date_str, "%Y-%m-%d %H:%M:%S") > time.strptime(esf[id][5], "%Y-%m-%d %H:%M:%S"):#爬取的时间后于存储的时间，则表示有更新
+                                #esf[id] = [xqm, built_year, total_price, price, link, update_date_str]#先用最新的数据来更新字典,然后根据价格来输出
+                                if total_price > esf[id][2]:
+                                    print([id, xqm, built_year, total_price, price, link, update_date_str, '调涨'])
+                                else:
+                                    print([id, xqm, built_year, total_price, price, link, update_date_str, '调降'])
+                                esf[id] = [xqm, built_year, total_price, price, link,update_date_str ,qy]  # 先用最新的数据来更新字典,然后根据价格来输出
                             else:
-                                print([id, xqm, built_year, total_price, price, link, update_date_str, '调降'])
-                            esf[id] = [xqm, built_year, total_price, price, link,update_date_str ,qy]  # 先用最新的数据来更新字典,然后根据价格来输出
+                                pass
                         else:
-                            pass
-                    else:
-                        print([id, xqm, built_year, total_price, price, link, update_date_str, '新上房源'])
-                        esf[id] = [xqm, built_year, total_price, price, link, update_date_str, qy]
+                            print([id, xqm, built_year, total_price, price, link, update_date_str, '新上房源'])
+                            esf[id] = [xqm, built_year, total_price, price, link, update_date_str, qy]
             except:
                 pass
     #print('%s 页已经爬取完毕' %page_number)
