@@ -16,7 +16,7 @@ import pickle
 
 #根据第一页上的信息条数获取翻页次数
 def count_page(qy):
-    page_url = 'http://esf.cdfgj.gov.cn/search?page=1&qy=%d&zj=600000,1200000' %qy
+    page_url = 'http://esf.cdfgj.gov.cn/search?page=1&qy=%d&zj=640000,1000000&mj=64,100' %qy
     retry_time = 10
     for i in range(retry_time):
         try:
@@ -35,7 +35,7 @@ def count_page(qy):
         return total_page
 #获取页面信息
 def get_page(page_number,qy):
-    page_url = 'http://esf.cdfgj.gov.cn/search?page=%d&qy=%d&zj=600000,1200000' %(page_number,qy)
+    page_url = 'http://esf.cdfgj.gov.cn/search?page=%d&qy=%d&zj=640000,1000000&mj=64,100' %(page_number,qy)
     retry_time = 10
     for i in range(retry_time):
         try:
@@ -79,9 +79,10 @@ def get_page(page_number,qy):
     time.sleep(1)
 
 #读取存档数据
-datafile = open('目标房子.pkl', 'rb')
-esf = pickle.load(datafile)
-datafile.close()
+# datafile = open('目标房子.pkl', 'rb')
+# esf = pickle.load(datafile)
+# datafile.close()
+esf = {}
 
 print('正在爬取青羊区的二手房数据\n')
 print('青羊区一共有%d页需要爬取\n' %count_page(510105))
@@ -104,6 +105,6 @@ for i in range(1,count_page(510107)+1):
     get_page(i,510107)
 
 #写入更新以后的数据
-datafile = open('目标房子.pkl', 'wb')
+datafile = open('目标二手房.pkl', 'wb')
 pickle.dump(esf, datafile)
 datafile.close()

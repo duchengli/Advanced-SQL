@@ -79,7 +79,7 @@ def save_post_texts(post):
                 f.write(result.text)
                 f.close()
 
-os.chdir(r'd:\Spider')
+os.chdir(r'c:\Spider')
 post_lists = []
 err_lists = []
 j = 1
